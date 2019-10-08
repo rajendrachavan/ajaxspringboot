@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <title>Employee Portal</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<!--<input type="button" name="getData" id="getData" value="GET DATA" onclick="getDataFromAPI();"/><br>-->
+<!--<input type="button" name="postData" id="postData" value="POST DATA" onclick="postDataFromAPI();"/><br>-->
+<!--<input type="text" name="demo_id" id="demo_id"/><br>-->
+<!--<input type="text" name="demo_name" id="demo_name"/><br>-->
+<div align="center">
+    <h2>Employee Details</h2>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Employee Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="employee : ${employeelist}">
+                <td th:text="${employee.id}">Employee ID</td>
+                <td th:text="${employee.empname}">Employee Name</td>
+                <td th:text="${employee.email}">Employee Email</td>
+            </tr>
+        </tbody>
+        <a href="registration"><input type="button" id="signup" value="New-Registration"/></a>
+    </table>
+</div>
+
+
+<script>
+	function getDataFromAPI() {
+	    $.ajax({
+	        url: "/getdata",
+	        type: "GET",
+	        success: function (data) {
+	        	console.log("GET DATA API RESPONSE - ID::"+data.id);
+	        	console.log("GET DATA API RESPONSE - NAME::"+data.empname);
+	        	console.log("GET DATA API RESPONSE - EMAIL::"+data.email);
+	        }, error: function (jqXHR, textStatus, errorThrown) {
+	        }
+		});
+	}
+
+	function postDataFromAPI() {
+
+		var modelObj = {
+				id: $("#demo_id").val(),
+				empname: $("#demo_name").val()
+		};
+
+		console.log("post data:"+modelObj);
+
+		 $.ajax({
+	            type: "POST",
+	            url: "/postdata",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            data: JSON.stringify(modelObj),
+	            success: function (data) {
+	            	console.log("POST API RESPONSE::"+data);
+	            },
+	            error: function (jqXHR, textStatus, errorThrown) {
+	            }
+	        });
+	}
+	</script>
+</body>
+</html>
